@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
@@ -12,8 +11,6 @@ import {
   MarkerType,
   BackgroundVariant,
   ConnectionMode,
-  applyEdgeChanges,
-  applyNodeChanges,
   OnConnectStartParams,
   Panel,
   OnSelectionChangeParams,
