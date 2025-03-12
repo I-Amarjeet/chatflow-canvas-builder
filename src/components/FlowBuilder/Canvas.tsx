@@ -128,7 +128,7 @@ const Canvas: React.FC<CanvasProps> = ({ onDrop, onDragOver }) => {
         position: { x: 250, y: 100 },
         data: { 
           message: 'Welcome to WhatsApp Chatflow Builder!',
-          onDeleteNode 
+          onDeleteNode
         },
       };
       

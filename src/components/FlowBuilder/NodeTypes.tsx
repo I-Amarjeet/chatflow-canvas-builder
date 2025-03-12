@@ -1,57 +1,39 @@
 
 import React from 'react';
-import { Handle, Position, NodeProps } from '@xyflow/react';
+import { Handle, Position, NodeProps, Node } from '@xyflow/react';
 import {
   MessageSquare,
   Image,
   ListFilter,
   BarChart,
   Clock,
-  ChevronRight,
-  ChevronDown,
   Trash2
 } from 'lucide-react';
 
-// Define interfaces for each node type's data
-interface BaseNodeData {
+// Define interfaces for node data
+interface NodeData {
   onDeleteNode: (id: string) => void;
-}
-
-interface TextNodeData extends BaseNodeData {
+  label?: string;
   message?: string;
-}
-
-interface ImageNodeData extends BaseNodeData {
   imageUrl?: string;
   caption?: string;
-}
-
-interface OptionItem {
-  text: string;
-  id: string;
-}
-
-interface OptionsNodeData extends BaseNodeData {
-  options?: OptionItem[];
   question?: string;
-}
-
-interface PollNodeData extends BaseNodeData {
-  options?: OptionItem[];
-  question?: string;
-}
-
-interface DelayNodeData extends BaseNodeData {
+  options?: Array<{ text: string; id: string; }>;
   duration?: string;
 }
 
 // Base Node component with common functionality
-const BaseNode: React.FC<{
+const BaseNode = ({ 
+  children, 
+  className, 
+  nodeId, 
+  onDeleteNode 
+}: {
   children: React.ReactNode;
   className: string;
   nodeId: string;
   onDeleteNode: (id: string) => void;
-}> = ({ children, className, nodeId, onDeleteNode }) => {
+}) => {
   return (
     <div className={`p-3 min-w-[180px] ${className}`}>
       <div className="flex justify-between items-center mb-2">
@@ -69,7 +51,7 @@ const BaseNode: React.FC<{
 };
 
 // Text message node
-export const TextNode: React.FC<NodeProps<TextNodeData>> = ({ id, data }) => {
+export const TextNode = ({ id, data }: NodeProps<NodeData>) => {
   return (
     <BaseNode className="node-text" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />
@@ -88,7 +70,7 @@ export const TextNode: React.FC<NodeProps<TextNodeData>> = ({ id, data }) => {
 };
 
 // Image node
-export const ImageNode: React.FC<NodeProps<ImageNodeData>> = ({ id, data }) => {
+export const ImageNode = ({ id, data }: NodeProps<NodeData>) => {
   return (
     <BaseNode className="node-image" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />
@@ -118,7 +100,7 @@ export const ImageNode: React.FC<NodeProps<ImageNodeData>> = ({ id, data }) => {
 };
 
 // Options node
-export const OptionsNode: React.FC<NodeProps<OptionsNodeData>> = ({ id, data }) => {
+export const OptionsNode = ({ id, data }: NodeProps<NodeData>) => {
   const options = data.options || [
     { text: "Option 1", id: "opt1" },
     { text: "Option 2", id: "opt2" },
@@ -157,7 +139,7 @@ export const OptionsNode: React.FC<NodeProps<OptionsNodeData>> = ({ id, data }) 
 };
 
 // Poll node
-export const PollNode: React.FC<NodeProps<PollNodeData>> = ({ id, data }) => {
+export const PollNode = ({ id, data }: NodeProps<NodeData>) => {
   const options = data.options || [
     { text: "Yes", id: "poll_yes" },
     { text: "No", id: "poll_no" },
@@ -197,7 +179,7 @@ export const PollNode: React.FC<NodeProps<PollNodeData>> = ({ id, data }) => {
 };
 
 // Delay node
-export const DelayNode: React.FC<NodeProps<DelayNodeData>> = ({ id, data }) => {
+export const DelayNode = ({ id, data }: NodeProps<NodeData>) => {
   return (
     <BaseNode className="node-delay" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />
@@ -221,4 +203,5 @@ export const nodeTypes = {
   optionsNode: OptionsNode,
   pollNode: PollNode,
   delayNode: DelayNode,
-};
+} as const;
+
