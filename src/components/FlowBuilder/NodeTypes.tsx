@@ -12,6 +12,39 @@ import {
   Trash2
 } from 'lucide-react';
 
+// Define interfaces for each node type's data
+interface BaseNodeData {
+  onDeleteNode: (id: string) => void;
+}
+
+interface TextNodeData extends BaseNodeData {
+  message?: string;
+}
+
+interface ImageNodeData extends BaseNodeData {
+  imageUrl?: string;
+  caption?: string;
+}
+
+interface OptionItem {
+  text: string;
+  id: string;
+}
+
+interface OptionsNodeData extends BaseNodeData {
+  options?: OptionItem[];
+  question?: string;
+}
+
+interface PollNodeData extends BaseNodeData {
+  options?: OptionItem[];
+  question?: string;
+}
+
+interface DelayNodeData extends BaseNodeData {
+  duration?: string;
+}
+
 // Base Node component with common functionality
 const BaseNode: React.FC<{
   children: React.ReactNode;
@@ -36,7 +69,7 @@ const BaseNode: React.FC<{
 };
 
 // Text message node
-export const TextNode: React.FC<NodeProps> = ({ id, data }) => {
+export const TextNode: React.FC<NodeProps<TextNodeData>> = ({ id, data }) => {
   return (
     <BaseNode className="node-text" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />
@@ -55,7 +88,7 @@ export const TextNode: React.FC<NodeProps> = ({ id, data }) => {
 };
 
 // Image node
-export const ImageNode: React.FC<NodeProps> = ({ id, data }) => {
+export const ImageNode: React.FC<NodeProps<ImageNodeData>> = ({ id, data }) => {
   return (
     <BaseNode className="node-image" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />
@@ -85,7 +118,7 @@ export const ImageNode: React.FC<NodeProps> = ({ id, data }) => {
 };
 
 // Options node
-export const OptionsNode: React.FC<NodeProps> = ({ id, data }) => {
+export const OptionsNode: React.FC<NodeProps<OptionsNodeData>> = ({ id, data }) => {
   const options = data.options || [
     { text: "Option 1", id: "opt1" },
     { text: "Option 2", id: "opt2" },
@@ -124,7 +157,7 @@ export const OptionsNode: React.FC<NodeProps> = ({ id, data }) => {
 };
 
 // Poll node
-export const PollNode: React.FC<NodeProps> = ({ id, data }) => {
+export const PollNode: React.FC<NodeProps<PollNodeData>> = ({ id, data }) => {
   const options = data.options || [
     { text: "Yes", id: "poll_yes" },
     { text: "No", id: "poll_no" },
@@ -164,7 +197,7 @@ export const PollNode: React.FC<NodeProps> = ({ id, data }) => {
 };
 
 // Delay node
-export const DelayNode: React.FC<NodeProps> = ({ id, data }) => {
+export const DelayNode: React.FC<NodeProps<DelayNodeData>> = ({ id, data }) => {
   return (
     <BaseNode className="node-delay" nodeId={id} onDeleteNode={data.onDeleteNode}>
       <Handle type="target" position={Position.Top} />

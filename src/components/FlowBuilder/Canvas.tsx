@@ -16,8 +16,8 @@ import {
   applyNodeChanges,
   OnConnectStartParams,
   Panel,
-  NodeDragHandler,
-  OnSelectionChangeParams
+  OnSelectionChangeParams,
+  Node
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { nodeTypes } from './NodeTypes';
@@ -112,8 +112,8 @@ const Canvas: React.FC<CanvasProps> = ({ onDrop, onDragOver }) => {
   );
 
   // Handle node drag
-  const onNodeDragStop: NodeDragHandler = useCallback(
-    (event, node) => {
+  const onNodeDragStop = useCallback(
+    (event: React.MouseEvent, node: Node) => {
       // Optional: Do something when node drag stops
     },
     []
